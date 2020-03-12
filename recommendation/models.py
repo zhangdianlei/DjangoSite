@@ -13,3 +13,4 @@ class User(models.Model):
 class Item(models.Model):
     item_id = models.IntegerField()
     item_name = models.CharField(max_length=64)
+
