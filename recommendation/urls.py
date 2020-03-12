@@ -9,5 +9,8 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('segment', views.segment_test)
+    path('segment', views.segment_test),
+    path('train', views.train),
+    path('similarity_test', views.calculate_sim),
+
 ]
