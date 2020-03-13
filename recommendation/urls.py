@@ -12,5 +12,5 @@ urlpatterns = [
     path('segment', views.segment_test),
     path('train', views.train),
     path('similarity_test', views.calculate_sim),
-
+    path('import_movies', views.import_movies),
 ]

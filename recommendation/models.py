@@ -21,7 +21,7 @@ class Movie(models.Model):
     """
     movie_id = models.CharField(max_length=64)
     name = models.CharField(max_length=128)
-    alias = models.CharField(max_length=128)
+    alias = models.TextField()
     actors = models.TextField()
     cover = models.TextField()
     director = models.TextField()
@@ -30,14 +30,14 @@ class Movie(models.Model):
     genres = models.CharField(max_length=128)
     imdb_id = models.CharField(max_length=128)
     language = models.CharField(max_length=64)
-    mins = models.IntegerField
-    official_site = models.CharField(max_length=128)
+    mins = models.CharField(max_length=64)
+    official_site = models.TextField()
     regions = models.CharField(max_length=64)
     release_date = models.CharField(max_length=64)
     slug = models.CharField(max_length=32)
     storyline = models.TextField()
     tags = models.TextField()
-    year = models.CharField(max_length=32)
+    year = models.TextField()
     actor_ids = models.TextField()
     director_ids = models.TextField()
 
