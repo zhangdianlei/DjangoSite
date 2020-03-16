@@ -5,7 +5,7 @@
 @time: 2020/3/11 10:29 上午
 """
 from django.urls import path
-from . import views
+from . import views, userViews
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -13,4 +13,5 @@ urlpatterns = [
     path('train', views.train),
     path('similarity_test', views.calculate_sim),
     path('import_movies', views.import_movies),
+    path('add_user', userViews.add_user_controller)
 ]

@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .util import segment, train_model, calculate_similarity
-from .service.movie_service import import_movies as movie2db
+from .service.movieService import import_movies as movie2db
 
 
 def index(request):
