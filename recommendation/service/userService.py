@@ -25,3 +25,13 @@ def add_user(name, age, phone, address, remark):
         remark=remark
     )
     user.save()
+
+
+def select_id(id):
+    """
+    根据id检索用户
+    :param id:
+    :return:
+    """
+    user = User.objects.filter(id=id)
+    return user

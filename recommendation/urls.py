@@ -13,5 +13,6 @@ urlpatterns = [
     path('train', views.train),
     path('similarity_test', views.calculate_sim),
     path('import_movies', views.import_movies),
-    path('add_user', userViews.add_user_controller)
+    path('add_user', userViews.add_user_controller),
+    path('select_user', userViews.select_user)
 ]
