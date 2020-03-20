@@ -33,5 +33,5 @@ def select_id(id):
     :param id:
     :return:
     """
-    user = User.objects.filter(id=id)
+    user = User.objects.filter(id__exact=id)
     return user

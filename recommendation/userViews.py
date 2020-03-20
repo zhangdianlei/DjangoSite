@@ -4,8 +4,10 @@
 @contact: dianlei.zhang@qq.com
 @time: 2020/3/16 4:36 下午
 """
-from django.http import HttpResponse
+import json
+from django.http import HttpResponse, JsonResponse
 from .service.userService import add_user, select_id
+from django.core import serializers
 
 
 def add_user_controller(request):
@@ -35,8 +37,10 @@ def select_user(request):
     :return:
     """
     if request.POST:
+        data = {}
         user = select_id(request.POST.get("id", 1))
-
-        return HttpResponse()
+        user_result = serializers.serialize("json", user)
+        data["data"] = json.loads(user_result)
+        return JsonResponse(data, safe=False)
     else:
         return HttpResponse("不是POST方法")

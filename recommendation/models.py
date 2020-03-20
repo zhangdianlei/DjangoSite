@@ -48,4 +48,4 @@ class UserMovieLogs(models.Model):
     """
     user_id = models.CharField(max_length=128)
     movie_id = models.CharField(max_length=128)
-    time = models.TimeField()
+    time = models.DateTimeField()
