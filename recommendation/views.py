@@ -1,12 +1,13 @@
 from datetime import datetime
 import json
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from .util import segment, train_model, calculate_similarity
 from .service.movieService import import_movies as movie2db, select_movies, get_total_rate
 from .service.logService import select_logs
 from .models import Movie
 from .util import load_model
+from django.core import serializers
 
 
 def index(request):
@@ -102,7 +103,19 @@ def recommend_movie(request):
             movie.cos = cos
 
         print("current_movies", current_movies)
+        current_movies.sort(key=lambda x: x.cos, reverse=True)
 
-        return HttpResponse('推荐成功')
+        data = []
+        for item in current_movies:
+            temp_data = {
+                "id": item.id,
+                "cos": item.cos,
+                "movie_id": item.movie_id,
+                "name": item.name
+            }
+            data.append(temp_data)
+
+        return HttpResponse(json.dumps(data), content_type="application/json")
+
     else:
         return HttpResponse('请求方法不是post')
