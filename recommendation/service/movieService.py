@@ -7,9 +7,36 @@
 import os
 from mysite import settings
 from ..models import Movie
+from ..util import str_similarity
+
+
+def get_total_rate(doc: str, movie_intros, model):
+    """
+    获取 综合相似度
+    :param model:
+    :param doc:
+    :param movie_intros:
+    :return:
+    """
+
+    total_cos = sum(str_similarity(doc, item, model) for item in movie_intros)
+    return total_cos
+
+
+def select_movies(movie_id):
+    """
+    根据电影 id 查询电影
+    :param movie_id:
+    :return:
+    """
+    return Movie.objects.get(id=movie_id)
 
 
 def import_movies():
+    """
+    导入数据集
+    :return:
+    """
     movie_name = "movies_all.txt"
     movie_file_name = os.path.join(settings.DATA_DIR, movie_name)
 
@@ -52,4 +79,3 @@ def import_movies():
                       release_date=release_date, slug=slug, storyline=storyline, tags=tags, year=year,
                       actor_ids=actor_ids, director_ids=director_ids)
         movie.save()
-

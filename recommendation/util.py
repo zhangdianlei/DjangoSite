@@ -73,7 +73,8 @@ def train_model(file_name: str, model_name: str):
     # 训练 Doc2Vec，并保存模型：
     sentences = LabeledLineSentence(data, doc_labels)
     # an empty model
-    model = gensim.models.Doc2Vec(vector_size=50, window=10, min_count=5, workers=4, alpha=0.025, min_alpha=0.025, epochs=10)
+    model = gensim.models.Doc2Vec(vector_size=50, window=10, min_count=5, workers=4, alpha=0.025, min_alpha=0.025,
+                                  epochs=10)
     model.build_vocab(sentences)
     print("开始训练...")
     model.train(sentences, total_examples=model.corpus_count, epochs=12)
@@ -206,3 +207,28 @@ def calculate_similarity(doc: str):
 
     print("相似度计算完成，返回处理结果")
     return result[:10]
+
+
+def str_similarity(first: str, second: str, model):
+    """
+    计算两个字符串的相似度
+    :param model:
+    :param first:
+    :param second:
+    :return:
+    """
+    if first != first or second != second or first == '' or second == '':
+        return 0
+
+    first_seg = segment(first)
+    second_seg = segment(second)
+
+    cos = 0
+
+    first_vec = sent2vec(model, first_seg)
+    second_vec = sent2vec(model, second_seg)
+
+    if isinstance(first_vec, Iterable) and isinstance(second_vec, Iterable):
+        cos = similarity(first_vec, second_vec)
+
+    return cos

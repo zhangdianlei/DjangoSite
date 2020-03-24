@@ -15,6 +15,9 @@ urlpatterns = [
     path('similarity_test', views.calculate_sim),
     path('import_movies', views.import_movies),
 
+    # 推荐电影
+    path('recommend_movie', views.recommend_movie),
+
     # user view
     path('add_user', userViews.add_user_controller),
     path('select_user', userViews.select_user),
@@ -22,4 +25,5 @@ urlpatterns = [
     # log view
     path('add_log', logViews.add_log_controller),
     path('select_log', logViews.select_recentlog_controller),
+
 ]

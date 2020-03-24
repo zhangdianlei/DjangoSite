@@ -1,7 +1,12 @@
+from datetime import datetime
+import json
 from django.shortcuts import render
 from django.http import HttpResponse
 from .util import segment, train_model, calculate_similarity
-from .service.movieService import import_movies as movie2db
+from .service.movieService import import_movies as movie2db, select_movies, get_total_rate
+from .service.logService import select_logs
+from .models import Movie
+from .util import load_model
 
 
 def index(request):
@@ -68,3 +73,36 @@ def import_movies(request):
 
     print("导入完成")
     return HttpResponse("导入完成")
+
+
+def recommend_movie(request):
+    """
+    传入用户 id 和 movie_id，返回推荐的电影序列结果
+    :param request:
+    :return:
+    """
+    if request.method == 'POST':
+        params = json.loads(request.body)
+        user_id = params["user_id"]
+        movies = params["movies"]
+        user_movie_logs = select_logs(user_id, 20)
+        history_movies = [item.movie_id for item in user_movie_logs]
+        print("history_movies", history_movies)
+
+        history_movie_intros = [select_movies(item).storyline for item in history_movies]
+
+        current_movies = [Movie.objects.get(id=item) for item in movies]
+
+        # 加载模型
+        model_name = "model_all.model"
+        model = load_model(model_name)
+
+        for movie in current_movies:
+            cos = get_total_rate(movie.storyline, history_movie_intros, model)
+            movie.cos = cos
+
+        print("current_movies", current_movies)
+
+        return HttpResponse('推荐成功')
+    else:
+        return HttpResponse('请求方法不是post')
