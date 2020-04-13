@@ -2,4 +2,6 @@
 *.xml
 .idea/workspace.xml
 *.pyc
-
+libs
+linux_libs
+win_libs
