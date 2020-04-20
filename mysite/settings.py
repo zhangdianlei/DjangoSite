@@ -81,6 +81,8 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'ENGINE': 'django.db.backends.oracle',
         'NAME': "intelligence",
         "USER": "root",
         "PASSWORD": "abcd1234",
