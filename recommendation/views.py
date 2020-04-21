@@ -78,7 +78,7 @@ def import_movies(request):
 
 def recommend_movie(request):
     """
-    传入用户 id 和 movie_id，返回推荐的电影序列结果
+    传入用户 id 和 intelligence_id，返回推荐的电影序列结果
     :param request:
     :return:
     """
@@ -110,7 +110,7 @@ def recommend_movie(request):
             temp_data = {
                 "id": item.id,
                 "cos": item.cos,
-                "movie_id": item.movie_id,
+                "intelligence_id": item.movie_id,
                 "name": item.name
             }
             data.append(temp_data)

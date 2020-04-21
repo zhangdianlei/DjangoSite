@@ -21,7 +21,7 @@ def add_log_controller(request):
         logs = json.loads(request.body)
         for log in logs:
             user_id = log["user_id"]
-            movie_id = log["movie_id"]
+            movie_id = log["intelligence_id"]
             time = datetime.strptime(log["time"], '%Y-%m-%d %H:%M:%S')
             add_logs(user_id, movie_id, time)
 
