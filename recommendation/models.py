@@ -42,10 +42,35 @@ class Movie(models.Model):
     director_ids = models.TextField()
 
 
-class UserMovieLogs(models.Model):
+class UserLogs(models.Model):
     """
     用户观影记录
     """
     user_id = models.CharField(max_length=128)
     movie_id = models.CharField(max_length=128)
+    rate = models.CharField(max_length=64, default="1")
     time = models.DateTimeField()
+
+
+class Intelligence(models.Model):
+    """
+    情报信息表
+    """
+    intelligence_id = models.CharField(max_length=128)
+
+    # 情报类型，分为 "动向情报" "情报产品"
+    intelligence_type = models.CharField(max_length=64, default="动向情报")
+
+    title = models.TextField
+    content = models.TextField
+    labels = models.TextField
+    time = models.DateTimeField
+
+
+class Result(models.Model):
+    """
+    推荐结果表
+    """
+    user_id = models.CharField(max_length=128)
+    intelligence_id = models.CharField(max_length=128)
+    time = models.DateTimeField

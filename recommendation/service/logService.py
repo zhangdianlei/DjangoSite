@@ -4,7 +4,7 @@
 @contact: dianlei.zhang@qq.com
 @time: 2020/3/16 4:40 下午
 """
-from ..models import UserMovieLogs
+from ..models import UserLogs
 
 
 def add_logs(user_id, movie_id, time):
@@ -15,8 +15,8 @@ def add_logs(user_id, movie_id, time):
     :param time:
     :return:
     """
-    user_movie_log = UserMovieLogs(user_id=user_id, movie_id=movie_id, time=time)
-    user_movie_log.save()
+    user_log = UserLogs(user_id=user_id, movie_id=movie_id, time=time)
+    user_log.save()
 
 
 def select_logs(user_id, num):
@@ -26,6 +26,6 @@ def select_logs(user_id, num):
     :param num:
     :return:
     """
-    result = UserMovieLogs.objects.filter(user_id__exact=user_id).order_by('-time')[0:num]
+    result = UserLogs.objects.filter(user_id__exact=user_id).order_by('-time')[0:num]
     return result
 
