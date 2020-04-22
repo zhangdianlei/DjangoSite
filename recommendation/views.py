@@ -87,7 +87,7 @@ def recommend_movie(request):
         user_id = params["user_id"]
         movies = params["movies"]
         user_movie_logs = select_logs(user_id, 20)
-        history_movies = [item.movie_id for item in user_movie_logs]
+        history_movies = [item.intelligence_id for item in user_movie_logs]
         print("history_movies", history_movies)
 
         history_movie_intros = [select_movies(item).storyline for item in history_movies]
@@ -110,7 +110,52 @@ def recommend_movie(request):
             temp_data = {
                 "id": item.id,
                 "cos": item.cos,
-                "intelligence_id": item.movie_id,
+                "intelligence_id": item.intelligence_id,
+                "name": item.name
+            }
+            data.append(temp_data)
+
+        return HttpResponse(json.dumps(data), content_type="application/json")
+
+    else:
+        return HttpResponse('请求方法不是post')
+
+
+def recommend_intelligence(request):
+    """
+    推荐情报
+    :param request:
+    :return:
+    """
+    if request.method == 'POST':
+        params = json.loads(request.body)
+        user_id = params["user_id"]
+        movies = params["movies"]
+        user_movie_logs = select_logs(user_id, 20)
+        history_movies = [item.intelligence_id for item in user_movie_logs]
+        print("history_movies", history_movies)
+
+        history_movie_intros = [select_movies(item).storyline for item in history_movies]
+
+        current_movies = [Movie.objects.get(id=item) for item in movies]
+
+        # 加载模型
+        model_name = "model_all.model"
+        model = load_model(model_name)
+
+        for movie in current_movies:
+            cos = get_total_rate(movie.storyline, history_movie_intros, model)
+            movie.cos = cos
+
+        print("current_movies", current_movies)
+        current_movies.sort(key=lambda x: x.cos, reverse=True)
+
+        data = []
+        for item in current_movies:
+            temp_data = {
+                "id": item.id,
+                "cos": item.cos,
+                "intelligence_id": item.intelligence_id,
                 "name": item.name
             }
             data.append(temp_data)

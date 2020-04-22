@@ -48,6 +48,7 @@ class UserLogs(models.Model):
     """
     user_id = models.CharField(max_length=128)
     intelligence_id = models.CharField(max_length=128)
+    intelligence_type = models.CharField(max_length=64, default="动向情报")
     rate = models.CharField(max_length=64, default="1")
     time = models.DateTimeField()
 
