@@ -19,7 +19,7 @@ def add_logs(user_id, intelligence_id, time):
     user_log.save()
 
 
-def select_logs(user_id, type, num):
+def select_logs(user_id, num):
     """
     查询log记录
     :param user_id:
@@ -27,6 +27,6 @@ def select_logs(user_id, type, num):
     :param num:
     :return:
     """
-    result = UserLogs.objects.filter(user_id__exact=user_id, intelligence_type=type).order_by('-time')[0:num]
+    result = UserLogs.objects.filter(user_id__exact=user_id).order_by('-time')[0:num]
     return result
 
