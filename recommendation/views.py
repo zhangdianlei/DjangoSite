@@ -4,6 +4,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from .util import segment, train_model, calculate_similarity
 from .service.movieService import import_movies as movie2db, select_movies, get_total_rate
+from .service.intelligenceService import select_intelligence, select_recent_intelligence
 from .service.logService import select_logs
 from .models import Movie
 from .util import load_model
@@ -130,28 +131,27 @@ def recommend_intelligence(request):
     if request.method == 'POST':
         params = json.loads(request.body)
         user_id = params["user_id"]
-        movies = params["movies"]
-        user_movie_logs = select_logs(user_id, 20)
-        history_movies = [item.intelligence_id for item in user_movie_logs]
-        print("history_movies", history_movies)
 
-        history_movie_intros = [select_movies(item).storyline for item in history_movies]
+        user_intelligence_logs = select_logs(user_id, 20)
+        history_intelligence = [item.intelligence_id for item in user_intelligence_logs]
 
-        current_movies = [Movie.objects.get(id=item) for item in movies]
+        history_intelligence_objects = [select_intelligence(item) for item in history_intelligence]
+
+        history_intelligence_texts = [(item.title + item.content + item.label) for item in history_intelligence_objects]
+
+        current_intelligences = select_recent_intelligence(20, "动向情报")
 
         # 加载模型
         model_name = "model_all.model"
         model = load_model(model_name)
 
-        for movie in current_movies:
-            cos = get_total_rate(movie.storyline, history_movie_intros, model)
-            movie.cos = cos
+        for intelligence in current_intelligences:
+            cos = get_total_rate(intelligence.get_union_content(), history_intelligence_texts, model)
+            intelligence.cos = cos
 
-        print("current_movies", current_movies)
-        current_movies.sort(key=lambda x: x.cos, reverse=True)
-
+        current_intelligences.sort(key=lambda x: x.cos, reverse=True)
         data = []
-        for item in current_movies:
+        for item in current_intelligences:
             temp_data = {
                 "id": item.id,
                 "cos": item.cos,

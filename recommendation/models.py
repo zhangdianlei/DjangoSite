@@ -65,6 +65,13 @@ class Intelligence(models.Model):
     labels = models.TextField()
     time = models.DateTimeField()
 
+    def get_union_content(self):
+        """
+        获取内容的组合
+        :return:
+        """
+        return self.title + self.content + self.labels
+
 
 class Result(models.Model):
     """
